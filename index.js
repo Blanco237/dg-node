@@ -20,8 +20,8 @@ app.post('/new', function () {
 
 })
 
-// PORT --> DOOR/ROOM
+const PORT = 5500;
 
-app.listen(5500,function () {
-    console.log('Server is running');
+app.listen(PORT,function () {
+    console.log(`Server is running on port: ${PORT}`);
 })
