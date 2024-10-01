@@ -1,0 +1,25 @@
+{
+  "name": "datagirl",
+  "version": "1.0.0",
+  "description": "Express server for datagirl bootcamp",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blanco237/dg-node.git"
+  },
+  "author": "Blanco237",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Blanco237/dg-node/issues"
+  },
+  "homepage": "https://github.com/Blanco237/dg-node#readme",
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
