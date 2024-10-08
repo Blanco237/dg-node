@@ -2,15 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { business } = require("../models")
 
+router.get('/', (req, res) => {
+    res.send("Welcome to Business")
+})
+
 router.post('/new', async (req, res) => {
     const dets = req.body;
 
-    const newUser = await business.create(dets)
+    const biz = await business.create(dets)
 
-    res.status(201).send(newUser.id);
+    res.status(201).send(biz.id);
 })
 
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
     const allbusiness = await business.findAll();
 
     res.json(allbusiness)

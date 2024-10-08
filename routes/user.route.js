@@ -1,28 +1,52 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { users } = require("../models")
+const { users } = require("../models");
 
-router.post('/new', async (req, res) => {
-    const userDetails = req.body;
+router.get("/", (req, res) => {
+  res.send("Welcome to Users");
+});
 
-    const newUser = await users.create(userDetails)
+router.post("/many", async (req, res) => {
+  const bulkUsers = req.body;
 
-    res.status(201).send(newUser.id);
-})
+  await users.createBulk(bulkUsers);
 
-router.get('/', async (req, res) => {
-    const allUsers = await users.findAll();
+  res.sendStatus(201);
+});
 
-    res.json(allUsers)
-})
+router.post("/new", async (req, res) => {
+  const userDetails = req.body;
 
+  const newUser = await users.create(userDetails);
 
-router.get('/:id', async (req, res) => {
-    const params = req.params;
+  res.status(201).send(newUser.id);
+});
 
-    const user = await users.findByPk(params.id);
+router.get("/all", async (req, res) => {
+  const allUsers = await users.findAll();
 
-    res.json(user);
+  res.json(allUsers);
+});
+
+router.get("/:id", async (req, res) => {
+  const params = req.params;
+
+  const user = await users.findByPk(params.id);
+
+  res.json(user);
+});
+
+router.patch("/:id",async  (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    await users.update(data, {
+        where: {
+            id: id
+        }
+    })
+
+    res.sendStatus(204)
 })
 
 module.exports = router;
