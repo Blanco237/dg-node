@@ -18,5 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  Services.associate = (models) => {
+    Services.hasMany(models.appointments);
+    Services.belongsTo(models.business);
+  };
+
   return Services;
 };

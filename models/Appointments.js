@@ -25,5 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  Appointments.associate = (models) => {
+    Appointments.hasOne(models.payments);
+    Appointments.belongsTo(models.business);
+    Appointments.belongsTo(models.users);
+    Appointments.belongsTo(models.services);
+  };
+
   return Appointments;
 };
