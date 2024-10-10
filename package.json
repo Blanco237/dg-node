@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Blanco237/dg-node#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.0",
     "pg": "^8.13.0",
     "sequelize": "^6.37.3",
