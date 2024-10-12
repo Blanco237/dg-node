@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { business, services } = require("../models");
+const {
+  business,
+  services,
+  appointments,
+  payments,
+  reviews,
+} = require("../models");
 const bcrypt = require("bcrypt");
 
 router.get("/", (req, res) => {
@@ -21,11 +27,63 @@ router.get("/all", async (req, res) => {
   res.json(allbusiness);
 });
 
+router.get("/data-count", async (req, res) => {
+  const biz = req.headers.biz;
+  const { id } = JSON.parse(biz);
+
+  const { count: serviceCount } = await services.findAndCountAll({
+    where: { businessId: id },
+  });
+  const { count: apptCount } = await appointments.findAndCountAll({
+    where: { businessId: id },
+  });
+  const { count: paymentCount } = await payments.findAndCountAll({
+    where: { businessId: id },
+  });
+  const { count: reviewCount } = await reviews.findAndCountAll({
+    where: { businessId: id },
+  });
+
+  const data = {
+    services: serviceCount,
+    appointments: apptCount,
+    payments: paymentCount,
+    reviews: reviewCount,
+  };
+
+  res.json(data);
+});
+
+router.get("/services", async (req, res) => {
+  const biz = req.headers.biz;
+  const { id } = JSON.parse(biz);
+
+  const servs = await services.findAll(({
+    where: {
+      businessId: id
+    }
+  }))
+
+  res.json(servs);
+})
+
+router.delete("/services/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await services.destroy({
+    where: {
+      id: id
+    }
+  })
+
+  res.sendStatus(203);
+})
+
 router.get("/:id", async (req, res) => {
   const params = req.params;
 
   const biz = await business.findByPk(params.id, {
-    include: services
+    include: services,
   });
 
   res.json(biz);
@@ -68,11 +126,17 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/service/create", async (req, res) => {
-  const serviceDets = req.body;
+  try {
+    const serviceDets = req.body;
 
-  await services.create(serviceDets);
+    await services.create(serviceDets);
 
-  res.sendStatus(201);
+    res.sendStatus(201);
+  } catch {
+    res.status(500).send("An Error Occured");
+  }
 });
+
+
 
 module.exports = router;
